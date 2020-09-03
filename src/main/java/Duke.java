@@ -111,7 +111,6 @@ public class Duke {
                 items[itemCount] = temp;
                 itemCount += 1;
             }
-
             if (userInputString.equals("event")){
                 Scanner userInput1 = new Scanner(System.in);
                 System.out.println("Please enter your event task. :)");
@@ -122,6 +121,36 @@ public class Duke {
                 event temp = new event(userInputString1,userInputString2);
                 items[itemCount] = temp;
                 itemCount += 1;
+            }
+            if (userInputString.equals("list")) {
+                System.out.println("---------------------------------------");
+                System.out.println("You have " + itemCount + " tasks and completed " + noOfTasksCompleted + " in total. Congratulations! :>");
+                for (int i = 1; i < itemCount + 1; i++) {
+                    System.out.print(i + ".");
+                    if (((items[i - 1]).getClassName()).equals("todo")) {
+                        System.out.print("[T] ");
+                    }
+                    if (((items[i - 1]).getClassName()).equals("deadline")) {
+                        System.out.print("[D] ");
+                    }
+                    if (((items[i - 1]).getClassName()).equals("event")) {
+                        System.out.print("[E] ");
+                    }
+                    if (items[i - 1].getTaskStatus() == false) {
+                        System.out.print("[✗] ");
+                    } else {
+                        System.out.print("[✓] ");
+                    }
+                    System.out.print(items[i - 1].getTaskName());
+                    if (((items[i - 1]).getClassName()).equals("todo")) {
+                        System.out.println(" ");
+                    }
+                    if (((items[i - 1]).getClassName()).equals("deadline") || ((items[i - 1]).getClassName()).equals("event")) {
+                        System.out.println(" " + (items[i - 1]).returnDate());
+                    }
+
+                }
+                System.out.println("---------------------------------------");
             }
             userInput = new Scanner(System.in);
             System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
