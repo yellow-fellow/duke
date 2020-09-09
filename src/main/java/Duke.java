@@ -80,6 +80,42 @@ public class Duke {
 
     }
 
+    public static String askUserInput (Scanner userInput){
+        System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
+        String userInputString = userInput.nextLine();
+        return userInputString;
+    }
+
+    public static todo askTodoTask (){
+        System.out.println("Please enter your todo task. :)");
+        Scanner userInput = new Scanner(System.in);
+        String userInputString = userInput.nextLine();
+        todo temp = new todo(userInputString);
+        return temp;
+    }
+
+    public static deadline askDeadlineTask (){
+        Scanner userInput1 = new Scanner(System.in);
+        System.out.println("Please enter your deadline task. :)");
+        String userInputString1 = userInput1.nextLine();
+        Scanner userInput2 = new Scanner(System.in);
+        System.out.println("Please enter your deadline. :)");
+        String userInputString2 = userInput2.nextLine();
+        deadline temp = new deadline(userInputString1,userInputString2);
+        return temp;
+    }
+
+    public static event askEventTask (){
+        Scanner userInput1 = new Scanner(System.in);
+        System.out.println("Please enter your event task. :)");
+        String userInputString1 = userInput1.nextLine();
+        Scanner userInput2 = new Scanner(System.in);
+        System.out.println("Please enter your event duration. :)");
+        String userInputString2 = userInput2.nextLine();
+        event temp = new event(userInputString1,userInputString2);
+        return temp;
+    }
+
     public static void main(String[] args) {
         System.out.println("---------------------------------------");
         System.out.println("Hello! Welcome to yellow-fellow bot :>");
@@ -87,42 +123,27 @@ public class Duke {
         System.out.println("---------------------------------------");
         task[] items = new task[100];
         Scanner userInput = new Scanner(System.in);
-        System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
-        String userInputString = userInput.nextLine();
+        String userInputString = askUserInput(userInput);
         int itemCount = 0;
         int noOfTasksCompleted = 0;
         while(!(userInputString.equals("exit") || userInputString.equals("quit"))){
             if (userInputString.equals("todo")){
-                userInput = new Scanner(System.in);
-                System.out.println("Please enter your todo task. :)");
-                userInputString = userInput.nextLine();
-                todo temp = new todo(userInputString);
-                items[itemCount] = temp;
+                todo input = askTodoTask();
+                items[itemCount] = input;
                 itemCount += 1;
+                userInputString = askUserInput(userInput);
             }
-            if (userInputString.equals("deadline")){
-                Scanner userInput1 = new Scanner(System.in);
-                System.out.println("Please enter your deadline task. :)");
-                String userInputString1 = userInput.nextLine();
-                Scanner userInput2 = new Scanner(System.in);
-                System.out.println("Please enter your deadline. :)");
-                String userInputString2 = userInput.nextLine();
-                deadline temp = new deadline(userInputString1,userInputString2);
-                items[itemCount] = temp;
+            else if (userInputString.equals("deadline")){
+                items[itemCount] = askDeadlineTask();
                 itemCount += 1;
+                userInputString = askUserInput(userInput);
             }
-            if (userInputString.equals("event")){
-                Scanner userInput1 = new Scanner(System.in);
-                System.out.println("Please enter your event task. :)");
-                String userInputString1 = userInput.nextLine();
-                Scanner userInput2 = new Scanner(System.in);
-                System.out.println("Please enter your event duration. :)");
-                String userInputString2 = userInput.nextLine();
-                event temp = new event(userInputString1,userInputString2);
-                items[itemCount] = temp;
+            else if (userInputString.equals("event")){
+                items[itemCount] = askEventTask();
                 itemCount += 1;
+                userInputString = askUserInput(userInput);
             }
-            if (userInputString.equals("list")) {
+            else if (userInputString.equals("list")) {
                 System.out.println("---------------------------------------");
                 System.out.println("You have " + itemCount + " tasks and completed " + noOfTasksCompleted + " in total. Congratulations! :>");
                 for (int i = 1; i < itemCount + 1; i++) {
@@ -150,11 +171,14 @@ public class Duke {
                     }
 
                 }
+
                 System.out.println("---------------------------------------");
+                userInputString = userInput.nextLine();
             }
-            userInput = new Scanner(System.in);
-            System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
-            userInputString = userInput.nextLine();
+            else{
+                System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
+                userInputString = userInput.nextLine();
+            }
             if (userInputString.equals("done")){
                 Scanner userInputCompleteTask = new Scanner(System.in);
                 System.out.println("Please key in the number of the task you have completed: ");
@@ -166,6 +190,8 @@ public class Duke {
                 System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
                 userInputString = userInput.nextLine();
             }
+
+
         }
         System.out.println("---------------------------------------");
         System.out.println("You have " + itemCount + " tasks and completed " + noOfTasksCompleted + " in total. Congratulations! :>");
