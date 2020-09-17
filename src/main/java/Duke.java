@@ -1,4 +1,6 @@
+import java.io.IOException;
 import java.util.*;
+import java.io.FileWriter;
 
 public class Duke {
     static class task{
@@ -30,6 +32,7 @@ public class Duke {
         public String returnDate(){ return this.date; }
 
         String getClassName(){ String className = this.getClass().getSimpleName(); return className;}
+
     }
     public static class todo extends task{
         private String taskName;
@@ -116,12 +119,41 @@ public class Duke {
         return temp;
     }
 
-    public static void main(String[] args) {
+    public static void saveFile(ArrayList<task> items) throws IOException {
+        FileWriter writer = new FileWriter("duke.txt");
+        for(task task: items) {
+            if ((task.getClassName()).equals("todo")){
+                writer.write("[T] | ");
+            }
+            if ((task.getClassName()).equals("deadline")){
+                writer.write("[D] | ");
+            }
+            if ((task.getClassName()).equals("event")){
+                writer.write("[E] | ");
+            }
+            if ((task.getTaskStatus()) == false){
+                writer.write("[✗] | ");
+            }
+            else{
+                writer.write("[✓] | ");
+            }
+
+            if ((task.getClassName()).equals("deadline") || (task.getClassName()).equals("event")){
+                writer.write( task.getTaskName() + " | " + task.returnDate() + System.lineSeparator());
+            }
+            else{
+                writer.write( task.getTaskName() + System.lineSeparator());
+            }
+
+        }
+        writer.close();
+    }
+    public static void main(String[] args) throws IOException {
         System.out.println("---------------------------------------");
         System.out.println("Hello! Welcome to yellow-fellow bot :>");
         System.out.println("What can I do for you?");
         System.out.println("---------------------------------------");
-        task[] items = new task[100];
+        ArrayList<task> items = new ArrayList<>();
         Scanner userInput = new Scanner(System.in);
         String userInputString = askUserInput(userInput);
         int itemCount = 0;
@@ -129,18 +161,21 @@ public class Duke {
         while(!(userInputString.equals("exit") || userInputString.equals("quit"))){
             if (userInputString.equals("todo")){
                 todo input = askTodoTask();
-                items[itemCount] = input;
+                items.add(input);
                 itemCount += 1;
+                saveFile(items);
                 userInputString = askUserInput(userInput);
             }
             else if (userInputString.equals("deadline")){
-                items[itemCount] = askDeadlineTask();
+                items.add(askDeadlineTask());
                 itemCount += 1;
+                saveFile(items);
                 userInputString = askUserInput(userInput);
             }
             else if (userInputString.equals("event")){
-                items[itemCount] = askEventTask();
+                items.add(askEventTask());
                 itemCount += 1;
+                saveFile(items);
                 userInputString = askUserInput(userInput);
             }
             else if (userInputString.equals("list")) {
@@ -148,31 +183,47 @@ public class Duke {
                 System.out.println("You have " + itemCount + " tasks and completed " + noOfTasksCompleted + " in total. Congratulations! :>");
                 for (int i = 1; i < itemCount + 1; i++) {
                     System.out.print(i + ".");
-                    if (((items[i - 1]).getClassName()).equals("todo")) {
+                    if (((items.get(i - 1)).getClassName()).equals("todo")) {
                         System.out.print("[T] ");
                     }
-                    if (((items[i - 1]).getClassName()).equals("deadline")) {
+                    if (((items.get(i-1)).getClassName()).equals("deadline")) {
                         System.out.print("[D] ");
                     }
-                    if (((items[i - 1]).getClassName()).equals("event")) {
+                    if (((items.get(i-1)).getClassName()).equals("event")) {
                         System.out.print("[E] ");
                     }
-                    if (items[i - 1].getTaskStatus() == false) {
+                    if (items.get(i-1).getTaskStatus() == false) {
                         System.out.print("[✗] ");
                     } else {
                         System.out.print("[✓] ");
                     }
-                    System.out.print(items[i - 1].getTaskName());
-                    if (((items[i - 1]).getClassName()).equals("todo")) {
+                    System.out.print((items.get(i-1)).getTaskName());
+                    if (((items.get(i-1)).getClassName()).equals("todo")) {
                         System.out.println(" ");
                     }
-                    if (((items[i - 1]).getClassName()).equals("deadline") || ((items[i - 1]).getClassName()).equals("event")) {
-                        System.out.println(" " + (items[i - 1]).returnDate());
+                    if (((items.get(i-1)).getClassName()).equals("deadline") || ((items.get(i-1)).getClassName()).equals("event")) {
+                        System.out.println(" " + (items.get(i-1)).returnDate());
                     }
 
                 }
 
                 System.out.println("---------------------------------------");
+                userInputString = userInput.nextLine();
+            }
+            else if (userInputString.equals("delete")) {
+                userInput = new Scanner(System.in);
+                System.out.println("Please enter the index of the task you would like to delete. :)");
+                int indexTaskToDelete = Integer.parseInt(userInput.nextLine()) - 1;
+                if (indexTaskToDelete > itemCount || itemCount == 0) {
+                    System.out.println("Fail to delete! You don't have any task in the list now.");
+                }
+                else{
+                    items.remove(indexTaskToDelete);
+                    itemCount -= 1;
+                    saveFile(items);
+                    System.out.println("Congratulations! You have successfully removed task " + indexTaskToDelete + " from your list. :)");
+                    System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
+                }
                 userInputString = userInput.nextLine();
             }
             else{
@@ -184,8 +235,9 @@ public class Duke {
                 System.out.println("Please key in the number of the task you have completed: ");
                 String userInputCompleteTaskString = userInput.nextLine();
                 int userInputCompleteTaskInt = Integer.parseInt(userInputCompleteTaskString);
-                items[userInputCompleteTaskInt-1].completeTask();
+                items.get(userInputCompleteTaskInt-1).completeTask();
                 noOfTasksCompleted += 1;
+                saveFile(items);
                 userInput = new Scanner(System.in);
                 System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
                 userInputString = userInput.nextLine();
@@ -197,55 +249,29 @@ public class Duke {
         System.out.println("You have " + itemCount + " tasks and completed " + noOfTasksCompleted + " in total. Congratulations! :>");
         for (int i=1;i<itemCount+1;i++){
             System.out.print(i + ".");
-            if (((items[i-1]).getClassName()).equals("todo")){
+            if (((items.get(i-1)).getClassName()).equals("todo")){
                 System.out.print("[T] ");
             }
-            if (((items[i-1]).getClassName()).equals("deadline")){
+            if (((items.get(i-1)).getClassName()).equals("deadline")){
                 System.out.print("[D] ");
             }
-            if (((items[i-1]).getClassName()).equals("event")){
+            if (((items.get(i-1)).getClassName()).equals("event")){
                 System.out.print("[E] ");
             }
-            if (items[i-1].getTaskStatus() == false){
+            if ((items.get(i-1)).getTaskStatus() == false){
                 System.out.print("[✗] ");
             }
             else{
                 System.out.print("[✓] ");
             }
-            System.out.print(items[i-1].getTaskName());
-            if (((items[i-1]).getClassName()).equals("todo")){
+            System.out.print((items.get(i-1)).getTaskName());
+            if (((items.get(i-1)).getClassName()).equals("todo")){
                 System.out.println(" ");
             }
-            if (((items[i-1]).getClassName()).equals("deadline")||((items[i-1]).getClassName()).equals("event")){
-                System.out.println(" " + (items[i-1]).returnDate());
+            if (((items.get(i-1)).getClassName()).equals("deadline")||((items.get(i-1)).getClassName()).equals("event")){
+                System.out.println(" " + (items.get(i-1)).returnDate());
             }
 
         }
-        System.out.println("---------------------------------------\n\n");
-
-        System.out.println("---------------------------------------");
-        System.out.println("That's all boys. See you soon!");
-        System.out.println("---------------------------------------");
-
-
-        //Level 1
-        /*boolean echo = true;
-        while (echo){
-            Scanner userInput = new Scanner(System.in);
-            System.out.println("Enter a word: ");
-            String userInputString = userInput.nextLine();
-            if (userInputString.equals("bye")){
-                echo = false;
-                System.out.println("---------------------------------------");
-                System.out.println("What a shame :( See you again soon!");
-                System.out.println("---------------------------------------");
-            }
-            else{
-                System.out.println("---------------------------------------");
-                System.out.println("You typed " + userInputString);
-                System.out.println("---------------------------------------");
-            }
-        }*/
     }
-
 }
