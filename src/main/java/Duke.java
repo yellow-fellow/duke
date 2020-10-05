@@ -84,7 +84,7 @@ public class Duke {
     }
 
     public static String askUserInput (Scanner userInput){
-        System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
+        System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / done / delete / find / list / quit.");
         String userInputString = userInput.nextLine();
         return userInputString;
     }
@@ -159,6 +159,27 @@ public class Duke {
         int itemCount = 0;
         int noOfTasksCompleted = 0;
         while(!(userInputString.equals("exit") || userInputString.equals("quit"))){
+            if (userInputString.equals("find")){
+                System.out.println("Please enter your search name. :)");
+                userInput = new Scanner(System.in);
+                userInputString = userInput.nextLine();
+                int temp_i = 1;
+                System.out.println("-----------------------------------");
+                for (int i =0;i<items.size();i++){
+                    if (items.get(i).getTaskName().contains(userInputString)){
+                        System.out.print(temp_i + ".");
+                        if ( items.get(i).getClassName().equals("todo") ) { System.out.print("[T]");}
+                        else if ( items.get(i).getClassName().equals("deadline")) { System.out.print("[D]");}
+                        else { System.out.print("[E]");}
+                        if ( items.get(i).getTaskStatus()) { System.out.print("[✓] ");}
+                        else { System.out.print("[✗] ");}
+                        System.out.print(items.get(i).getTaskName() + "\n");
+                        temp_i += 1;
+                    }
+                }
+                System.out.println("-----------------------------------");
+                userInputString = askUserInput(userInput);
+            }
             if (userInputString.equals("todo")){
                 todo input = askTodoTask();
                 items.add(input);
@@ -221,8 +242,9 @@ public class Duke {
                     items.remove(indexTaskToDelete);
                     itemCount -= 1;
                     saveFile(items);
-                    System.out.println("Congratulations! You have successfully removed task " + indexTaskToDelete + " from your list. :)");
-                    System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
+                    int temp_index = indexTaskToDelete+1;
+                    System.out.println("Congratulations! You have successfully removed task " + temp_index + " from your list. :)");
+                    System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / done / delete / find / list / quit.");
                 }
                 userInputString = userInput.nextLine();
             }
@@ -239,7 +261,7 @@ public class Duke {
                 noOfTasksCompleted += 1;
                 saveFile(items);
                 userInput = new Scanner(System.in);
-                System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / list / quit.");
+                System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / done / delete / find / list / quit.");
                 userInputString = userInput.nextLine();
             }
 

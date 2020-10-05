@@ -1,2 +1,2 @@
 [T] | [✗] | makan
-[T] | [✗] | sleep
+[T] | [✗] | makan makan
