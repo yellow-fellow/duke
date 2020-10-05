@@ -15,33 +15,33 @@ This is a simple task-scheduler program built in Java. Listed below are the func
   
 ## Instructions
 
-# todo
+### todo
   1. When prompted for an instruction, type 'todo' inside the terminal
   2. Enter the Todo task name when prompted
   
-# deadline
+### deadline
   1. When prompted for an instruction, type 'deadline' inside the terminal
   2. Enter the Deadline task name when prompted
   3. Enter the due date when prompted
   
-# event
+### event
   1. When prompted for an instruction, type 'event' inside the terminal
   2. Enter the Event task name when prompted
   3. Enter the duration of event when prompted
   
-# done
+### done
   1. When prompted for an instruction, type 'done' inside the terminal
   2. Enter the index of the task you wish to mark as completed *Tasks are listed in an ascending order according to time of entry*
   
-# delete
+### delete
   1. When prompted for an instruction, type 'delete' inside the terminal
   2. Enter the index of the task you wish to remove *Tasks are listed in an ascending order according to time of entry*
   
-# find
+### find
   1. When prompted for an instruction, type 'find' inside the terminal
   2. Enter the keyword you would like to search for
   
-# list
+### list
   1. When prompted for an instruction, type 'list' inside the terminal
   
 # exit
