@@ -1,2 +1,3 @@
 [T] | [✗] | makan
-[T] | [✗] | makan makan
+[D] | [✗] | makan | 10th october
+[E] | [✗] | makan | 2 hours
