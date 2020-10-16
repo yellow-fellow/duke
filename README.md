@@ -44,5 +44,5 @@ This is a simple task-scheduler program built in Java. Listed below are the func
 ### list
   1. When prompted for an instruction, type 'list' inside the terminal
   
-# exit
+### exit
   1. When prompted for an instruction, type 'exit' inside the terminal
