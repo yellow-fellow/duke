@@ -151,9 +151,7 @@ public class Duke {
                     if (((items.get(i - 1)).getClassName()).equals("deadline") || ((items.get(i - 1)).getClassName()).equals("event")) {
                         System.out.println(" " + (items.get(i - 1)).returnDate());
                     }
-
                 }
-
                 System.out.println("---------------------------------------");
                 userInputString = userInput.nextLine();
             } else if (userInputString.equals("delete")) {
@@ -187,8 +185,6 @@ public class Duke {
                 System.out.println("Enter an instruction: \nPlease select either todo / deadline / event / done / delete / find / list / quit.");
                 userInputString = userInput.nextLine();
             }
-
-
         }
         System.out.println("---------------------------------------");
         System.out.println("You have " + itemCount + " tasks and completed " + noOfTasksCompleted + " in total. Congratulations! :>");
